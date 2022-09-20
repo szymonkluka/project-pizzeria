@@ -210,10 +210,7 @@
             }
           } else {
             // check if the option is default
-            if (option.default) {
-              // reduce price variable
-              price -= option.price;
-            }
+            
           }
           // find the picture in the class .paramId-optionId //
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
