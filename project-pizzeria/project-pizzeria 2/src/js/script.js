@@ -73,12 +73,20 @@
       defaultValue: 1,
       defaultMin: 1,
       defaultMax: 9,
-    }, // CODE CHANGED
+    }, 
+    db: {
+      url: '//localhost:3131',
+      products: 'products',
+      orders: 'orders',
+    },
+    
+    // CODE CHANGED
     // CODE ADDED START
     cart: {
       defaultDeliveryFee: 20,
     },
     // CODE ADDED END
+    
   };
 
   const templates = {
@@ -502,7 +510,7 @@
   
     sendOrder() {
       const thisCart = this;
-      const url = `${settings.db.url}/${settings.db.orders}`;
+      const url = settings.db.url + '/' + settings.db.orders;
       const payload = {
         address: thisCart.dom.address.value,
         phone: thisCart.dom.phone.value,
@@ -648,13 +656,29 @@
       console.log('thisApp.data:', thisApp.data);
       // eslint-disable-next-line no-empty
       for(let productData in thisApp.data.products){
-        new Product(productData, thisApp.data.products[productData]);
+        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
       }
     },
     
     initData: function(){
       const thisApp = this;
-      thisApp.data = dataSource;
+      thisApp.data = {};
+      const url = settings.db.url + '/' + settings.db.products;
+
+      fetch(url)
+        .then(function (responseRaw) {
+          return responseRaw.json();
+        })
+        .then(function (parsedResponse) {
+        // console.log('parsedResponse:', parsedResponse);
+
+          /* save parsedResponse as thisApp.data.products */
+          
+          thisApp.data.products = parsedResponse;
+          /* execute initMenue method */
+          thisApp.initMenu();
+              
+        });
     },
 
     init: function(){
