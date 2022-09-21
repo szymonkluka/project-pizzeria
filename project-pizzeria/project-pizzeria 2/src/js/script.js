@@ -210,7 +210,10 @@
             }
           } else {
             // check if the option is default
-            
+            if (option.default) {
+              // reduce price variable
+              price -= option.price;
+            }
           }
           // find the picture in the class .paramId-optionId //
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
@@ -222,19 +225,7 @@
             } else {
               optionImage.classList.remove(classNames.menuProduct.imageVisible);
             }
-            if(optionSelected) {
-              // check if the option is not default //
-              if(!option.default == true) {
-                // add option price to price variable //
-                price += option.price;
-              }
-            } else {
-              // check if the option is default //
-              if(!option.default == false) {
-                // reduce price variable //
-                price -= option.price;
-              }
-            }
+            
           }
         }
       }
