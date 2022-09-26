@@ -1,1 +1,1 @@
-https://thawing-mountain-87309.herokuapp.com/
+https://pojedynczyprojekt.herokuapp.com/
