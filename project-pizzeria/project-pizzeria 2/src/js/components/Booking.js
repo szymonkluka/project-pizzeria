@@ -192,7 +192,7 @@ class Booking {
 
         // console.log('thisbooking', thisBooking.selectTableId);
       } else {
-        alert('someone else booked this table');
+        alert('someone else booked this table, please choose other');
       }
     }
   }
@@ -277,6 +277,7 @@ class Booking {
     } else if (thisBooking.dom.checkboxes[0].checked) {
       payload.starters.push(thisBooking.dom.checkboxes[0].value);
     }
+
 
     const options = {
       method: 'POST',
