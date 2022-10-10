@@ -32,7 +32,7 @@ class Booking {
       eventsRepeat: [settings.db.repeatParam, endDateParam],
     };
 
-    // console.log('getData parmas', params);
+    console.log('getData parmas', params);
 
     const urls = {
       booking: `${settings.db.url}/${settings.db.booking}?${params.booking.join(
@@ -46,7 +46,7 @@ class Booking {
       }?${params.eventsRepeat.join('&')}`,
     };
 
-    // console.log('urls', urls.booking, urls.eventsCurrent, urls.eventsRepeat);
+    console.log('urls', urls.booking, urls.eventsCurrent, urls.eventsRepeat);
 
     Promise.all([
       fetch(urls.booking),
@@ -64,9 +64,9 @@ class Booking {
         ]);
       })
       .then(function ([bookings, eventsCurrent, eventsRepeat]) {
-        // console.log('bookings', bookings);
-        // console.log('eventsCurrent', eventsCurrent);
-        // console.log('eventsRepeat', eventsRepeat);
+        console.log('bookings', bookings);
+        console.log('eventsCurrent', eventsCurrent);
+        console.log('eventsRepeat', eventsRepeat);
         thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
       });
   }
@@ -104,7 +104,7 @@ class Booking {
 
     thisBooking.updateDOM();
 
-    // console.log('thisBooking.booked', thisBooking.booked);
+    console.log('thisBooking.booked', thisBooking.booked);
   }
 
   makeBooked(date, hour, duration, table) {
@@ -129,6 +129,7 @@ class Booking {
     }
   }
 
+  
   updateDOM() {
     const thisBooking = this;
 
@@ -162,14 +163,14 @@ class Booking {
       table.classList.remove(classNames.booking.selected);
     }
     thisBooking.selectTableId = null;
-    // console.log('tojestbooking', thisBooking);
+    console.log('tojestbooking', thisBooking);
   }
 
   initTables(e) {
     const thisBooking = this;
-    // console.log(e.target);
+    console.log(e.target);
     if (e.target.classList.contains('table')) {
-      // console.log('stolik');
+      console.log('stolik');
 
       if (!e.target.classList.contains(classNames.booking.tableBooked)) {
         for (let table of thisBooking.dom.tables) {
@@ -190,9 +191,9 @@ class Booking {
           );
         }
 
-        // console.log('thisbooking', thisBooking.selectTableId);
+        console.log('thisbooking', thisBooking.selectTableId);
       } else {
-        alert('someone else booked this table, please choose other');
+        alert('proszę wybrać dostępny stolik w celu ');
       }
     }
   }
@@ -274,10 +275,71 @@ class Booking {
         thisBooking.dom.checkboxes[0].value,
         thisBooking.dom.checkboxes[1].value
       );
-    } else if (thisBooking.dom.checkboxes[0].checked) {
+    } 
+    else if (thisBooking.dom.checkboxes[0].checked) {
       payload.starters.push(thisBooking.dom.checkboxes[0].value);
     }
+    //else if - jeżeli w innym przypadku 
+    // if przyjmuje wartość logiczną i sprawdza czy coś jest prawdą albo fałszem i dopiero jak jest prawdą to coś robi
+    // 0 mapuje się na falls, null, underfined, pusty string false natomiast 1,2,3,4 to jest true, cały string to jest prawda
+    // jak 
+    if(this.selectTableId==null){
+      alert('wybierz stolik');
+      return;
+    }
+    //'' pusty string
+    // if(thisBooking.dom.phone.value.length>0) - inny sposób
+    // 
+    if(thisBooking.dom.phone.value==''){
+      alert('uzupełnij nr telefonu');
+      return;
+    }
+    if(thisBooking.dom.address.value==''){
+      alert('uzupełnij adres');
+      return;
+    }
 
+    
+    const bookingsToday = thisBooking.booked[thisBooking.date]; // wszystkie bookingi dla dzisiaj
+    console.log([thisBooking.date]);
+    console.log(thisBooking.booked);
+    const beginTime = utils.hourToNumber(thisBooking.hourPicker.correctValue); // od kiedy sprawdzamy godziny? (liczba)
+    console.log(utils.hourToNumber);
+    console.log(thisBooking.hourPicker.correctValue);
+    const endTime = beginTime + Number(thisBooking.hoursAmount.correctValue); // do kiedy sprawdzamy godziny? (liczba)
+
+    // odfiltrujmy godziny do sprawdzzenia - z bookingsToday wyciągamy wszystkie wartości z przedziału begin - end
+    const hoursToCheck = Object.keys(bookingsToday).filter(function (hour) {
+      return hour >= beginTime && hour < endTime;
+    });
+
+    let isTableFree = true; // zachowajmy informację czy stolik jest wolny
+
+    // iterujemy po godzinach - jeśli tableId jest zajęty w godzinach
+    // pomiędzy startem i końcem - stolik jest zajęty
+    hoursToCheck.forEach(function (hour) {
+      if (
+        isTableFree &&
+        bookingsToday[hour].includes(thisBooking.selectTableId)
+      ) {
+        isTableFree = false;
+      }
+    });
+
+    if (!isTableFree) {
+      alert('Nie możemy wykonać rezerwacji - stolik jest już zajęty');
+      return;
+    }
+
+
+    
+    
+
+
+  
+  
+    //chce sprawdzić jak zarezerwowany stolik od 10 do 11 na thisbooking.booked sprawdzić czy w jaki
+    
 
     const options = {
       method: 'POST',
@@ -292,7 +354,7 @@ class Booking {
         return response.json();
       })
       .then(function (parsedResponse) {
-        // console.log('parsedResponse:', parsedResponse);
+        console.log('parsedResponse:', parsedResponse);
         thisBooking.makeBooked(
           parsedResponse.date,
           parsedResponse.hour,
@@ -300,7 +362,7 @@ class Booking {
           parsedResponse.table
         );
         thisBooking.updateDOM();
-        // console.log('thisBooking.booked after response:', thisBooking.booked);
+        console.log('thisBooking.booked after response:', thisBooking.booked);
       });
   }
 
