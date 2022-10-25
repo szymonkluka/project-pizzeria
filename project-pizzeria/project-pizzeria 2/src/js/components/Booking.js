@@ -193,7 +193,7 @@ class Booking {
 
         console.log('thisbooking', thisBooking.selectTableId);
       } else {
-        alert('proszę wybrać dostępny stolik w celu ');
+        alert('proszę wybrać dostępny stolik w celu dokonania rezerwacji');
       }
     }
   }
@@ -272,24 +272,24 @@ class Booking {
 
     if (thisBooking.dom.checkboxes[1].checked) {
       payload.starters.push(
-        thisBooking.dom.checkboxes[0].value,
+        
         thisBooking.dom.checkboxes[1].value
       );
     } 
-    else if (thisBooking.dom.checkboxes[0].checked) {
-      payload.starters.push(thisBooking.dom.checkboxes[0].value);
-    }
-    //else if - jeżeli w innym przypadku 
-    // if przyjmuje wartość logiczną i sprawdza czy coś jest prawdą albo fałszem i dopiero jak jest prawdą to coś robi
-    // 0 mapuje się na falls, null, underfined, pusty string false natomiast 1,2,3,4 to jest true, cały string to jest prawda
-    // jak 
+    
+    if (thisBooking.dom.checkboxes[0].checked) {
+      payload.starters.push(
+        
+        thisBooking.dom.checkboxes[0].value
+      );
+    } 
+    
+    
     if(this.selectTableId==null){
       alert('wybierz stolik');
       return;
     }
-    //'' pusty string
-    // if(thisBooking.dom.phone.value.length>0) - inny sposób
-    // 
+    
     if(thisBooking.dom.phone.value==''){
       alert('uzupełnij nr telefonu');
       return;
@@ -299,7 +299,6 @@ class Booking {
       return;
     }
 
-    
     const bookingsToday = thisBooking.booked[thisBooking.date]; // wszystkie bookingi dla dzisiaj
     console.log([thisBooking.date]);
     console.log(thisBooking.booked);
@@ -308,7 +307,7 @@ class Booking {
     console.log(thisBooking.hourPicker.correctValue);
     const endTime = beginTime + Number(thisBooking.hoursAmount.correctValue); // do kiedy sprawdzamy godziny? (liczba)
 
-    // odfiltrujmy godziny do sprawdzzenia - z bookingsToday wyciągamy wszystkie wartości z przedziału begin - end
+    // odfiltrujmy godziny do sprawdzenia - z bookingsToday wyciągamy wszystkie wartości z przedziału begin - end
     const hoursToCheck = Object.keys(bookingsToday).filter(function (hour) {
       return hour >= beginTime && hour < endTime;
     });
@@ -327,19 +326,10 @@ class Booking {
     });
 
     if (!isTableFree) {
-      alert('Nie możemy wykonać rezerwacji - stolik jest już zajęty');
+      alert('Nie możemy przygotować rezerwacji, stolik w wybranym przedziale czasowym jest już zajęty. Prosimy o sprawdzenie dostępności pozostałych stolików. Przepraszamy za utrudnienia');
       return;
     }
 
-
-    
-    
-
-
-  
-  
-    //chce sprawdzić jak zarezerwowany stolik od 10 do 11 na thisbooking.booked sprawdzić czy w jaki
-    
 
     const options = {
       method: 'POST',

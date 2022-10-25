@@ -31,17 +31,6 @@ class AmountWidget extends BaseWidget {
     );
   }
 
-  // setValue(value) {
-  //   const thisWidget = this;
-
-  //   const newValue = thisWidget.parseValue(value);
-
-  //   if (thisWidget.value !== newValue && thisWidget.isValid(value))
-  //     thisWidget.value = newValue;
-  //   thisWidget.renderValue();
-  //   thisWidget.announce();
-  // }
-
   isValid(value) {
     return (
       !isNaN(value) &&
@@ -73,12 +62,6 @@ class AmountWidget extends BaseWidget {
     });
   }
 
-  // announce() {
-  //   const thisWidget = this;
-
-  //   const event = new CustomEvent('updated', { bubbles: true });
-  //   thisWidget.dom.wrapper.dispatchEvent(event);
-  // }
 }
 
 export default AmountWidget;

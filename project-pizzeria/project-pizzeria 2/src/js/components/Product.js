@@ -125,20 +125,6 @@ class Product {
         const option = param.options[optionId];
         // console.log(optionId, option);
 
-        // solution1?
-        // if (formData.hasOwnProperty(paramId)) {
-        //   if (formData[paramId].includes(optionId)) {
-        //     console.log(optionId);
-        //     if (!option.default) {
-        //       price += option.price;
-        //     }
-        //   } else {
-        //     if (option.default) {
-        //       price -= option.price;
-        //     }
-        //   }
-        // }
-
         // check if there is param with a name of paramId in formData and if it includes optionId
         const optionSelected =
           formData[paramId] && formData[paramId].includes(optionId);
